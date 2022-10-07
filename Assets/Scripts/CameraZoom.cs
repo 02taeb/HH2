@@ -8,130 +8,37 @@ public class CameraZoom : MonoBehaviour
 
     [SerializeField] private Camera cameraComponent;
     [SerializeField] private float zoomSpeed;
-    [SerializeField] private bool resetOnExit;
-    [Tooltip("Field of view camera should change to if camera is in perspective mode")]
-    [SerializeField] private float newFieldOfView;
     [Tooltip("Ortographic size camera should change to if camera is in perspective mode")]
     [SerializeField] private float newOrtographicSize;
     private float zoomFactor = 100f;
-    private float initialFieldOfView;
+    private float initialPosX, initialPosY;
     private float initialOrtographicSize;
 
     private void Start()
     {
-        if (cameraComponent.orthographic)
-        {
-            initialOrtographicSize = cameraComponent.orthographicSize;
-        } 
-        else
-        {
-            initialFieldOfView = cameraComponent.fieldOfView;
-        }
+        initialPosX = cameraComponent.gameObject.GetComponent<RectTransform>().rect.x;
+        initialPosY = cameraComponent.gameObject.GetComponent<RectTransform>().rect.y;
+        initialOrtographicSize = cameraComponent.orthographicSize;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void ZoomIn(float posX, float posY, float ortographicSize)
     {
-        if (collision.CompareTag("Player"))
-        {
-            StopAllCoroutines();
-            StartCoroutine(SlowChangeOut());
-        }
+        StartCoroutine(SlowZoom());
+        cameraComponent.gameObject.GetComponent<RectTransform>().position = new Vector3(posX, posY, -10);
+        cameraComponent.orthographicSize = ortographicSize;
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private IEnumerator SlowZoom()
     {
-        if (collision.CompareTag("Player") && resetOnExit)
-        {
-            StopAllCoroutines();
-            StartCoroutine(SlowChangeIn());
-        }
+        // Zoom slowly, try to make zoom out and in same method.
+        
+        yield return new WaitForSeconds(0.1f);
     }
 
-    private IEnumerator SlowChangeOut()
+    public void ZoomOut()
     {
-        if (cameraComponent.orthographic)
-        {
-            StartCoroutine(Ortographic(newOrtographicSize));
-        }
-        else
-        {
-            StartCoroutine(Perspective(newFieldOfView));
-        }
-
-        yield return null;
-    }
-
-    private IEnumerator SlowChangeIn()
-    {
-        if (cameraComponent.orthographic)
-        {
-            StartCoroutine(Ortographic(initialOrtographicSize));
-        }
-        else
-        {
-            StartCoroutine(Perspective(initialFieldOfView));
-        }
-
-        yield return null;
-    }
-
-    private IEnumerator Ortographic(float newSize)
-    {
-        float currentSize = cameraComponent.orthographicSize;
-        float difference;
-
-        if (newSize < cameraComponent.orthographicSize)
-        {
-            difference = currentSize - newSize;
-        }
-        else
-        {
-            difference = newSize - currentSize;
-        }
-
-        for (int i = 0; i < difference * zoomFactor; i++)
-        {
-            if (newSize < currentSize)
-            {
-                currentSize -= 1 / zoomFactor;
-            }
-            else 
-            {
-                currentSize += 1 / zoomFactor;
-            }
-
-            cameraComponent.orthographicSize = currentSize;
-            yield return new WaitForSeconds(1 / (zoomFactor * zoomSpeed * 10));
-        }
-    }
-
-    private IEnumerator Perspective(float newFOV)
-    {
-        float currentFov = cameraComponent.fieldOfView;
-        float difference;
-
-        if (newFOV < currentFov)
-        {
-            difference = currentFov - newFOV;
-        }
-        else
-        {
-            difference = newFOV - currentFov;
-        }
-
-        for (int i = 0; i < difference * zoomFactor; i++)
-        {
-            if (newFOV < currentFov)
-            {
-                currentFov -= 1 / zoomFactor;
-            }
-            else
-            {
-                currentFov += 1 / zoomFactor;
-            }
-
-            cameraComponent.fieldOfView = currentFov;
-            yield return new WaitForSeconds(1 / (zoomFactor * zoomSpeed * 10));
-        }
+        // SlowZoom();
+        cameraComponent.gameObject.GetComponent<RectTransform>().position = new Vector3(initialPosX, initialPosY, -10);
+        cameraComponent.orthographicSize = initialOrtographicSize;
     }
 }
