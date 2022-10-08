@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraZoom : MonoBehaviour
 {
@@ -8,24 +9,28 @@ public class CameraZoom : MonoBehaviour
 
     [SerializeField] private Camera cameraComponent;
     [SerializeField] private float zoomSpeed;
-    [Tooltip("Ortographic size camera should change to if camera is in perspective mode")]
-    [SerializeField] private float newOrtographicSize;
-    private float zoomFactor = 100f;
+    [SerializeField] private Image fadeImg;
+    private float fadeSpeed = 1;
     private float initialPosX, initialPosY;
     private float initialOrtographicSize;
 
     private void Start()
     {
-        initialPosX = cameraComponent.gameObject.GetComponent<RectTransform>().rect.x;
-        initialPosY = cameraComponent.gameObject.GetComponent<RectTransform>().rect.y;
+        initialPosX = 320;
+        initialPosY = 240;
         initialOrtographicSize = cameraComponent.orthographicSize;
     }
 
     public void ZoomIn(float posX, float posY, float ortographicSize)
     {
         StartCoroutine(SlowZoom());
-        cameraComponent.gameObject.GetComponent<RectTransform>().position = new Vector3(posX, posY, -10);
-        cameraComponent.orthographicSize = ortographicSize;
+        //cameraComponent.gameObject.GetComponent<RectTransform>().position = new Vector3(posX, posY, -10);
+        //cameraComponent.orthographicSize = ortographicSize;
+    }
+
+    public void FadeZoomIn(float posX, float posY, float ortographicSize)
+    {
+        StartCoroutine(FadeIn(posX, posY, ortographicSize));
     }
 
     private IEnumerator SlowZoom()
@@ -37,8 +42,50 @@ public class CameraZoom : MonoBehaviour
 
     public void ZoomOut()
     {
-        // SlowZoom();
+        StartCoroutine(SlowZoom());
+        //cameraComponent.gameObject.GetComponent<RectTransform>().position = new Vector3(initialPosX, initialPosY, -10);
+        //cameraComponent.orthographicSize = initialOrtographicSize;
+    }
+
+    public void FadeZoomOut()
+    {
+        StartCoroutine(FadeOut());
+    }
+
+    private IEnumerator FadeIn(float posX, float posY, float ortographicSize)
+    {
+        for (int i = 0; i <= 255; i++)
+        {
+            fadeImg.color = new Color32(0, 0, 0, (byte)i);
+            yield return new WaitForSeconds(1 / fadeSpeed / 100);
+        }
+
+        // Needs to actually zoom over time
+        cameraComponent.gameObject.GetComponent<RectTransform>().position = new Vector3(posX, posY, -10);
+        cameraComponent.orthographicSize = ortographicSize;
+
+        for (int i = 255; i >= 0; i--)
+        {
+            fadeImg.color = new Color32(0, 0, 0, (byte)i);
+            yield return new WaitForSeconds(1 / fadeSpeed / 100);
+        }
+    }
+
+    private IEnumerator FadeOut()
+    {
+        for (int i = 0; i <= 255; i++)
+        {
+            fadeImg.color = new Color32(0, 0, 0, (byte)i);
+            yield return new WaitForSeconds(1 / fadeSpeed/100);
+        }
+
         cameraComponent.gameObject.GetComponent<RectTransform>().position = new Vector3(initialPosX, initialPosY, -10);
         cameraComponent.orthographicSize = initialOrtographicSize;
+
+        for (int i = 255; i >= 0; i--)
+        {
+            fadeImg.color = new Color32(0, 0, 0, (byte)i);
+            yield return new WaitForSeconds(1 / fadeSpeed / 100);
+        }
     }
 }
