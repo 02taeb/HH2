@@ -14,6 +14,7 @@ public class TrainController : MonoBehaviour
     private float beatTimer, beat = 1 / (109 / 60); // 1/(109/60) because EyeOfTheTiger is (supposedly) 109 BPM,
                                                     // it feels kinda off but I'm unsure if it's performance, 
                                                     // Time.deltaTime of wrong beat (did use an unofficial instrumental version).
+                                                    // Timing is definetely off, think it might be some logic error.
     private int spawned;
     
     // Start is called before the first frame update
