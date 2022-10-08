@@ -11,6 +11,13 @@ public class SceneController : MonoBehaviour
     private void Start()
     {
         cameraZoom = Camera.main.gameObject.GetComponent<CameraZoom>();
+        ShowIntro();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+            ShowMain();
     }
 
     public void ShowIntro()
@@ -37,11 +44,11 @@ public class SceneController : MonoBehaviour
         convParent.SetActive(false);
     }
 
-    private IEnumerator WaitForConv(int seconds)
+    private IEnumerator WaitForConv(float seconds)
     {
         yield return new WaitForSeconds(seconds);
 
-        cameraZoom.FadeZoomOut();
+        cameraZoom.ZoomOut();
 
         convParent.SetActive(true);
         mainParent.SetActive(false);
@@ -51,9 +58,15 @@ public class SceneController : MonoBehaviour
 
     public void ShowConv()
     {
-        Debug.Log("Press");
+        /*
         cameraZoom.FadeZoomIn(354, -134, 80);
 
-        StartCoroutine(WaitForConv(5));
+        StartCoroutine(WaitForConv(2.5f));
+        */
+
+        convParent.SetActive(true);
+        mainParent.SetActive(false);
+        introParent.SetActive(false);
+        trainParent.SetActive(false);
     }
 }

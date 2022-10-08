@@ -23,7 +23,7 @@ public class CameraZoom : MonoBehaviour
 
     public void ZoomIn(float posX, float posY, float ortographicSize)
     {
-        StartCoroutine(SlowZoom());
+        StartCoroutine(SlowZoomIn(new Vector3(posX, posY, -10), ortographicSize));
         //cameraComponent.gameObject.GetComponent<RectTransform>().position = new Vector3(posX, posY, -10);
         //cameraComponent.orthographicSize = ortographicSize;
     }
@@ -33,16 +33,26 @@ public class CameraZoom : MonoBehaviour
         StartCoroutine(FadeIn(posX, posY, ortographicSize));
     }
 
-    private IEnumerator SlowZoom()
+    private IEnumerator SlowZoomIn(Vector3 newPos, float ortographicSize)
     {
-        // Zoom slowly, try to make zoom out and in same method.
+        while (Mathf.Abs(cameraComponent.orthographicSize - ortographicSize) > 1 || Mathf.Abs(Vector3.Distance(cameraComponent.gameObject.GetComponent<RectTransform>().position, newPos)) > 1)
+        {
+            cameraComponent.gameObject.GetComponent<RectTransform>().position = Vector3.Lerp(newPos, cameraComponent.gameObject.GetComponent<RectTransform>().position, 1 / zoomSpeed);
+            cameraComponent.orthographicSize = Mathf.Lerp(ortographicSize, cameraComponent.orthographicSize, 1 / zoomSpeed);
+        }
         
+        yield return new WaitForSeconds(0);
+    }
+
+    private IEnumerator SlowZoomOut()
+    {
+        //Vector3.Lerp();
         yield return new WaitForSeconds(0.1f);
     }
 
     public void ZoomOut()
     {
-        StartCoroutine(SlowZoom());
+        StartCoroutine(SlowZoomOut());
         //cameraComponent.gameObject.GetComponent<RectTransform>().position = new Vector3(initialPosX, initialPosY, -10);
         //cameraComponent.orthographicSize = initialOrtographicSize;
     }
@@ -61,8 +71,9 @@ public class CameraZoom : MonoBehaviour
         }
 
         // Needs to actually zoom over time
-        cameraComponent.gameObject.GetComponent<RectTransform>().position = new Vector3(posX, posY, -10);
-        cameraComponent.orthographicSize = ortographicSize;
+        StartCoroutine(SlowZoomIn(new Vector3(posX, posY, -10), ortographicSize));
+        //cameraComponent.gameObject.GetComponent<RectTransform>().position = new Vector3(posX, posY, -10);
+        //cameraComponent.orthographicSize = ortographicSize;
 
         for (int i = 255; i >= 0; i--)
         {
