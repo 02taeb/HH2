@@ -33,7 +33,8 @@ public class TrainController : MonoBehaviour
             timer = 0;
             if (spawned < maxTargets)
             {
-                //Spawn target
+                GameObject temp = Instantiate(targetPrefab, spawnPoses[Random.Range(0, spawnPoses.Length)], Quaternion.identity, targetParent.transform);
+                temp.SetActive(true);
                 spawned++;
             }
         }

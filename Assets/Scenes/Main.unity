@@ -2338,7 +2338,13 @@ MonoBehaviour:
   targetPrefab: {fileID: 3363591798725441059}
   targetParent: {fileID: 902901369}
   visIndicator: {fileID: 1698735509}
-  spawnPoses: []
+  spawnPoses:
+  - {x: -361, y: -176, z: -10}
+  - {x: -361, y: 0, z: -10}
+  - {x: -361, y: 184, z: -10}
+  - {x: 364, y: 184, z: -10}
+  - {x: 364, y: 0, z: -10}
+  - {x: 364, y: -176, z: -10}
   feedback: {fileID: 22214071}
 --- !u!1 &1698735509
 GameObject:
@@ -2502,6 +2508,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TargetPrefab
       objectReference: {fileID: 0}
+    - target: {fileID: 722131014614023200, guid: 3b2d870a6c4a10d49a6eec15feeb75cb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 722131014614023201, guid: 3b2d870a6c4a10d49a6eec15feeb75cb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2568,11 +2578,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 722131014614023201, guid: 3b2d870a6c4a10d49a6eec15feeb75cb, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -49
+      value: -27.2
       objectReference: {fileID: 0}
     - target: {fileID: 722131014614023201, guid: 3b2d870a6c4a10d49a6eec15feeb75cb, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 128
+      value: 132.7
       objectReference: {fileID: 0}
     - target: {fileID: 722131014614023201, guid: 3b2d870a6c4a10d49a6eec15feeb75cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
