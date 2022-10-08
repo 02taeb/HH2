@@ -5,7 +5,7 @@ using UnityEngine;
 public class SceneController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject introParent, mainParent, trainParent, convParent;
+    private GameObject introParent, mainParent, trainParent, convParent, startButton;
     private CameraZoom cameraZoom;
 
     private void Start()
@@ -23,6 +23,7 @@ public class SceneController : MonoBehaviour
     public void ShowIntro()
     {
         introParent.SetActive(true);
+        startButton.SetActive(true);
         mainParent.SetActive(false);
         trainParent.SetActive(false);
         convParent.SetActive(false);
@@ -32,6 +33,7 @@ public class SceneController : MonoBehaviour
     {
         mainParent.SetActive(true);
         introParent.SetActive(false);
+        startButton.SetActive(false);
         trainParent.SetActive(false);
         convParent.SetActive(false);
     }
@@ -41,6 +43,7 @@ public class SceneController : MonoBehaviour
         trainParent.SetActive(true);
         mainParent.SetActive(false);
         introParent.SetActive(false);
+        startButton.SetActive(false);
         convParent.SetActive(false);
     }
 
@@ -67,6 +70,7 @@ public class SceneController : MonoBehaviour
         convParent.SetActive(true);
         mainParent.SetActive(false);
         introParent.SetActive(false);
+        startButton.SetActive(false);
         trainParent.SetActive(false);
     }
 }
