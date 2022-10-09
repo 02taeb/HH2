@@ -705,6 +705,8 @@ MonoBehaviour:
   mainParent: {fileID: 304829713}
   trainParent: {fileID: 510348358}
   convParent: {fileID: 793113687}
+  canvas: {fileID: 334551195}
+  vid: {fileID: 1667189145}
 --- !u!4 &361238320
 Transform:
   m_ObjectHideFlags: 0
