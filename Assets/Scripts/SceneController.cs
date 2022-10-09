@@ -5,7 +5,7 @@ using UnityEngine;
 public class SceneController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject introParent, mainParent, trainParent, convParent;
+    private GameObject introParent, mainParent, trainParent, convParent, canvas, vid;
     private CameraZoom cameraZoom;
 
     private void Start()
@@ -16,8 +16,15 @@ public class SceneController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if (Input.GetKey(KeyCode.Escape) && canvas.activeSelf)
             ShowMain();
+        else if (Input.GetKey(KeyCode.Escape) && !canvas.activeSelf)
+        {
+            canvas.SetActive(true);
+            vid.SetActive(false);
+            ShowMain();
+        }
+
     }
 
     public void ShowIntro()
